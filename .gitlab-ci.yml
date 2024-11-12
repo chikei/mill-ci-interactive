@@ -1,0 +1,31 @@
+default:
+  image: eclipse-temurin:17
+  cache:
+    paths:
+      - ".cache/mill"
+      - ".cache/coursier"
+  before_script:
+    - find .cache/coursier -type d -name "*-SNAPSHOT" -print -exec rm -rf '{}' \; || true
+    - find out/ -maxdepth 1 -type d -name "mill-worker-*" -print -exec rm -rf '{}' \; || true
+  after_script:
+    - find .cache/coursier -type d -name "*-SNAPSHOT" -print -exec rm -rf '{}' \; || true
+    - find out/ -maxdepth 1 -type d -name "mill-worker-*" -print -exec rm -rf '{}' \; || true
+
+stages:
+  - build
+
+variables:
+  MILL_DOWNLOAD_PATH: ".cache/mill/download"
+  COURSIER_CACHE: ".cache/coursier"
+
+build_branch:
+  stage: build
+  script:
+    - ./mill -i mill.scalalib.scalafmt.ScalafmtModule/checkFormatAll __.sources || true
+    - ./mill -i clean
+    - ./mill -i _.compile
+  artifacts:
+    paths:
+      - out/**/test/testReportDir.dest/TEST-*.xml
+    reports:
+      junit: out/**/test/testReportDir.dest/TEST-*.xml
