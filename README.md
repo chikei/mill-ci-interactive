@@ -1,4 +1,4 @@
-execute using [glci](https://github.com/firecow/gitlab-ci-local) `gitlab-ci-local --stage build`
+execute using [glci](https://github.com/firecow/gitlab-ci-local) `gitlab-ci-local --stage build`, change first `mill -i` to mill or remove `COURSIER_CACHE` make it works
 
 ```
 build_branch starting eclipse-temurin:17 (build)

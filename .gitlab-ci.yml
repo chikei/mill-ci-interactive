@@ -1,21 +1,10 @@
 default:
   image: eclipse-temurin:17
-  cache:
-    paths:
-      - ".cache/mill"
-      - ".cache/coursier"
-  before_script:
-    - find .cache/coursier -type d -name "*-SNAPSHOT" -print -exec rm -rf '{}' \; || true
-    - find out/ -maxdepth 1 -type d -name "mill-worker-*" -print -exec rm -rf '{}' \; || true
-  after_script:
-    - find .cache/coursier -type d -name "*-SNAPSHOT" -print -exec rm -rf '{}' \; || true
-    - find out/ -maxdepth 1 -type d -name "mill-worker-*" -print -exec rm -rf '{}' \; || true
 
 stages:
   - build
 
 variables:
-  MILL_DOWNLOAD_PATH: ".cache/mill/download"
   COURSIER_CACHE: ".cache/coursier"
 
 build_branch:
